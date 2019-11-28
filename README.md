@@ -21,3 +21,8 @@ TOKEN_SECRET
 2. DO npm install to install all dependencies.
 3. Install react-scripts globally using npm install -g react-scripts.
 4. Run the development server using npm run start.
+
+### Starting the cli
+1. Go to python-cli folder.
+2. Run command python3 app.py
+
