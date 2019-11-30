@@ -1,9 +1,24 @@
 categories = ['electronic', 'commodity', 'stationery']
+seller_array = [{ 'username': 'shubham', 'id': 0 }]
+item_array = []
+item_array.append({
+    'name': 'name',
+    'description': 'description',
+    'starting_price': 1000,
+    'sold': False,
+    'id': 0,
+    'seller_id': 0,
+    'bidder_id': None,
+    'selling_price': None,
+})
+bidder_array = [{ 'username': 'bidder', 'id': 0 }]
+bid_log_array = [{ 'price': 1001, 'item_id': 0, 'bidder_id': 0 }, { 'price': 1010, 'item_id': 0, 'bidder_id': 0 }]
+
 
 def separate():
     print('\n\n--------')
 
-def item_options(id, item, bid_log_array):
+def item_options(id):
     print(item)
     print('\n\nChoose one of the options')
     print('\n1. Get current bids\n2. Get highest bids\n3. Stop bidding\n4. Print Invoice\n5. Go back')
@@ -58,7 +73,7 @@ def item_options(id, item, bid_log_array):
             print('Incorrect input')
                 
 
-def get_all_items(id, item_array, bid_log_array):
+def get_all_items(id):
     separate()
     print('Choose one of the items')
 
@@ -79,27 +94,31 @@ def get_all_items(id, item_array, bid_log_array):
             item = item_array[int(input_val)]
             print('Item obtained')
             separate()
-            item_options(id, item, bid_log_array)
+            item_options(id, item)
         except Exception as e:
             print(e)
             print('Error in input')
             continue
 
 
-def login_user(seller_array):
+def login_user():
     while True:
         separate()
-        val = int(input('Enter user id :'))
         user = None
         try:
+            val = int(input('Enter user id :'))
             user = seller_array[val]
+
+            if user['id'] != val:
+                print('User blocked for fraudulent activity')
+                return '-1', '-1'
         except:
             continue
         print('Logged in')
         return user['username'], val
 
 
-def user_register(seller_array):
+def user_register():
     separate()
     id = len(seller_array)
     print('Your user id is {id}'.format(id=id))
@@ -117,7 +136,7 @@ def user_register(seller_array):
     return username, id
 
 
-def add_item(id, item_array):
+def add_item(id):
     separate()
     print('Enter following details')
     name = None
@@ -167,7 +186,7 @@ def add_item(id, item_array):
     print('Bidding has started for this item')
 
 
-def seller_interface(seller_array, item_array, bid_log_array):
+def seller_interface():
     print('Choose one of the options for seller')
     print('1. Login\n2. Register\n3. Go back\n')
     username = None
@@ -177,16 +196,19 @@ def seller_interface(seller_array, item_array, bid_log_array):
         separate()
         input_val = input('Enter input :')
         if input_val == '2':
-            username, id = user_register(seller_array)
+            username, id = user_register()
             break
         elif input_val == '1':
-            username, id = login_user(seller_array)
+            username, id = login_user()
             break
         elif input_val == '3':
             return
         else:
             print('incorrect option')
             continue
+
+    if username == '-1' and id == '-1':
+        return
 
     print('Welcome {user}'.format(user=username))
     seller = seller_array[id]
@@ -197,9 +219,9 @@ def seller_interface(seller_array, item_array, bid_log_array):
         print('1. Add Item\n2. Get Added Items\n3. Go back\n')
         input_val = input('Enter input :')
         if input_val == '2':
-            get_all_items(id, item_array, bid_log_array)
+            get_all_items(id)
         elif input_val == '1':
-            add_item(id, item_array)
+            add_item(id)
         elif input_val == '3':
             break
         else:
